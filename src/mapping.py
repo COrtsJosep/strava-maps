@@ -1,7 +1,10 @@
-import glob
 import pandas as pd
 import geopandas as gpd
+from pathlib import Path
 from pypalettes import load_cmap
+
+src_path = Path(__file__).parent
+data_path = src_path.parent / 'data'
 
 cmap = load_cmap('kiss') # 5 categories
 
@@ -10,7 +13,7 @@ def generate_map() -> None:
         [
             gpd.read_file(filename, layer = 'tracks') 
             for filename
-            in glob.glob('data/*.gpx')
+            in data_path.glob('*.gpx')
         ]
     )
 
@@ -22,8 +25,9 @@ def generate_map() -> None:
         .explore(
             tiles = 'CartoDB dark_matter', 
             column = 'Type', 
-            cmap = cmap,
-            style_kwds = {'weight': 5},
+            #cmap = cmap,
+            cmap = ['cyan', 'magenta', 'yellow', 'green'],
+            style_kwds = {'weight': 2.5},
         )
-        .save('templates/map.html')
+        .save(src_path / 'templates' / 'map.html')
     )
