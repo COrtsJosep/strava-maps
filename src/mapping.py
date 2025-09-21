@@ -57,6 +57,10 @@ def calculate_statistics(filepath: Path) -> pd.DataFrame:
         columns = ['ele', 'time', 'geometry']
     )
     
+    gdf = gdf.loc[ # keep only observations where the position changes
+        ~(gdf.loc[:, 'geometry'] == gdf.loc[:, 'geometry'].shift(1))
+    ].reset_index(drop = True)
+    
     total_euclidean_distance = 0
     altitude_won = 0
     altitude_lost = 0
