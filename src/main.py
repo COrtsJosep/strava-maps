@@ -22,6 +22,7 @@ def upload():
             
         generate_map()
         
+        # delete them after having created the map
         for file in data_path.glob('data/*.gpx'):
             file.unlink()
             
