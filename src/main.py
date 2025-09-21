@@ -1,6 +1,6 @@
 from pathlib import Path
 from mapping import generate_map
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 src_path = Path(__file__).parent
@@ -26,4 +26,8 @@ def upload():
         for file in data_path.glob('data/*.gpx'):
             file.unlink()
             
-        return render_template('map.html')
+        return jsonify({'status': 'success', 'redirect': '/map'})
+        
+@app.route('/map')
+def show_map():
+    return render_template('map.html')

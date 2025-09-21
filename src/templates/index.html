@@ -1,11 +1,129 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>GPX Upload</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPX Map Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .upload-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .file-input {
+            border: 2px dashed #ced4da;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-input:hover {
+            border-color: #0d6efd;
+            background-color: #f8f9fa;
+        }
+        .file-input.disabled {
+            opacity: 0.6;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+        .btn-upload {
+            background-color: #0d6efd;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-upload:hover {
+            background-color: #0b5ed7;
+        }
+        .btn-upload:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
-    <form action = "/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" multiple />
-        <input type = "submit" value="Upload">
-    </form>
+    <div class="upload-container">
+        <h2 class="text-center mb-4"><i class="fas fa-map-marked-alt me-2"></i>GPX Map Generator</h2>
+        <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <div class="file-input" onclick="document.getElementById('fileInput').click()">
+                    <input type="file" class="form-control d-none" id="fileInput" name="file" multiple required>
+                    <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                    <p>Drag & Drop files here or click to browse</p>
+                    <p class="text-muted" id="fileCount">Supports .gpx files only</p>
+                </div>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-upload btn-lg" id="uploadButton">
+                    <span id="buttonText"><i class="fas fa-upload me-2"></i>Upload & Generate Map</span>
+                    <span id="buttonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileCount = document.getElementById('fileCount');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                fileCount.textContent = this.files.length + ' file(s) selected';
+            } else {
+                fileCount.textContent = 'Supports .gpx files only';
+            }
+        });
+
+        const form = document.getElementById('uploadForm');
+        const uploadButton = document.getElementById('uploadButton');
+        const buttonText = document.getElementById('buttonText');
+        const buttonSpinner = document.getElementById('buttonSpinner');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Disable drag & drop area
+            const fileInputArea = document.querySelector('.file-input');
+            fileInputArea.classList.add('disabled');
+
+            // Disable button and show spinner
+            uploadButton.disabled = true;
+            buttonText.classList.add('visually-hidden');
+            buttonSpinner.classList.remove('d-none');
+
+            const formData = new FormData(form);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    window.location.href = '/map';
+                } else {
+                    alert('Error: ' + xhr.statusText);
+                    // Re-enable everything on error
+                    fileInputArea.classList.remove('disabled');
+                    uploadButton.disabled = false;
+                    buttonText.classList.remove('visually-hidden');
+                    buttonSpinner.classList.add('d-none');
+                }
+            };
+
+            xhr.send(formData);
+        });
+    </script>
 </body>
 </html>
+
