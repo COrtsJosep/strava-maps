@@ -6,6 +6,11 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path('..').resolve()))
+
 project = 'strava-maps'
 copyright = '2025, COrtsJosep'
 author = 'COrtsJosep'
@@ -14,7 +19,10 @@ release = '0.0.1'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+]
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']

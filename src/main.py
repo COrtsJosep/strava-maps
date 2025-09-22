@@ -1,5 +1,5 @@
 from pathlib import Path
-from mapping import generate_map
+from .mapping import generate_map
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
