@@ -1,10 +1,10 @@
 # strava-maps
 
-strava-maps is a tiny Flask app that lets you visualize the itineraries of all your Strava activities locally, without sharing your data with third parties, and free of charge. It is your data, after all! 
+strava-maps is a tiny [Flask](https://flask.palletsprojects.com/en/stable/) app that lets you visualize the itineraries of all your [Strava](https://www.strava.com/) activities locally, without sharing your data with third parties, and free of charge. It is your data, after all! 
 
 ## Installation
 
-Clone the repository, create a Python venv, install the required packages, and run the flask app.
+Clone the repository, create a Python venv, install the required packages, and run the [Flask](https://flask.palletsprojects.com/en/stable/) app.
 
 ## Usage
 
