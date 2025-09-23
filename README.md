@@ -27,4 +27,4 @@ No point of contributing into such a small project. But go ahead if you please!
 
 ## License
 
-[The Unilisence](https://unlicense.org/)
+[The Unlicense](https://unlicense.org/)
